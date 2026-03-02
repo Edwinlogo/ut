@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horario · Jose Edwin Lopez Gonzalez</title>
+<style>
+  :root {
+    --red:       #c0392b;
+    --red-dark:  #96281b;
+    --red-light: #e74c3c;
+    --bg:        #111111;
+    --surface:   #1c1c1c;
+    --surface2:  #252525;
+    --border:    #333333;
+    --text:      #f0f0f0;
+    --subtext:   #aaaaaa;
+    --badge-bg:  #2a0a0a;
+    --tab-bg:    #1c1c1c;
+    --tab-text:  #cccccc;
+    --card-bg:   #1c1c1c;
+    --meta-bg:   #252525;
+    --menu-bg:   #1a1a1a;
+    --menu-border: #3a0a0a;
+  }
+  [data-theme="light"] {
+    --bg:        #ffffff;
+    --surface:   #ffffff;
+    --surface2:  #f9f9f9;
+    --border:    #e0e0e0;
+    --text:      #111111;
+    --subtext:   #555555;
+    --badge-bg:  #ffeaea;
+    --tab-bg:    #ffffff;
+    --tab-text:  #444444;
+    --card-bg:   #ffffff;
+    --meta-bg:   #fdf4f4;
+    --menu-bg:   #ffffff;
+    --menu-border: #f0d0d0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a0000, var(--red-dark), var(--red));
+    color: white;
+    padding: 20px 20px 18px;
+    text-align: center;
+    position: relative;
+  }
+  header h1 { font-size: 1.2rem; font-weight: 800; letter-spacing: 0.5px; }
+  header p  { font-size: 0.8rem; opacity: 0.8; margin-top: 3px; }
+
+  /* ── HAMBURGER MENU ── */
+  .menu-btn {
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 10px;
+    width: 40px; height: 40px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 5px;
+    cursor: pointer; z-index: 200;
+  }
+  .menu-btn span {
+    display: block; width: 20px; height: 2px;
+    background: white; border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .menu-btn.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .menu-btn.open span:nth-child(2) { opacity: 0; }
+  .menu-btn.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* Drawer */
+  .drawer-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 150;
+  }
+  .drawer-overlay.show { display: block; }
+  .drawer {
+    position: fixed; top: 0; right: -280px;
+    width: 260px; height: 100vh;
+    background: var(--menu-bg);
+    border-left: 1px solid var(--menu-border);
+    z-index: 160;
+    transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
+    padding: 0;
+    display: flex; flex-direction: column;
+    box-shadow: -8px 0 30px rgba(0,0,0,0.4);
+  }
+  .drawer.open { right: 0; }
+  .drawer-header {
+    background: linear-gradient(135deg, #1a0000, var(--red-dark));
+    padding: 20px 18px 16px;
+    color: white;
+  }
+  .drawer-header h3 { font-size: 0.95rem; font-weight: 800; }
+  .drawer-header p  { font-size: 0.72rem; opacity: 0.7; margin-top: 2px; }
+  .drawer-body { padding: 12px 0; flex: 1; overflow-y: auto; }
+
+  .drawer-section-label {
+    font-size: 0.65rem; font-weight: 800; letter-spacing: 1px;
+    color: var(--red-light); text-transform: uppercase;
+    padding: 8px 18px 4px;
+  }
+
+  .drawer-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 18px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.88rem; font-weight: 600;
+    cursor: pointer;
+    border: none; background: none; width: 100%;
+    text-align: left;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--border);
+  }
+  .drawer-item:hover { background: var(--surface2); }
+  .drawer-item .di-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .di-red  { background: var(--badge-bg); }
+  .di-green{ background: #0a2a0a; }
+  .di-blue { background: #0a1a2a; }
+  .di-gold { background: #2a1a00; }
+  [data-theme="light"] .di-green { background: #e8f5e9; }
+  [data-theme="light"] .di-blue  { background: #e3f2fd; }
+  [data-theme="light"] .di-gold  { background: #fff8e1; }
+
+  .drawer-item .di-text small { display: block; font-size: 0.68rem; font-weight: 400; color: var(--subtext); margin-top: 1px; }
+
+  /* Theme toggle inside drawer */
+  .theme-switch {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .theme-switch .di-left { display: flex; align-items: center; gap: 12px; }
+  .toggle-track {
+    width: 44px; height: 24px; border-radius: 12px;
+    background: var(--border); position: relative;
+    transition: background 0.3s; flex-shrink: 0;
+  }
+  .toggle-track.on { background: var(--red); }
+  .toggle-knob {
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: white; transition: left 0.3s;
+  }
+  .toggle-track.on .toggle-knob { left: 23px; }
+
+  .drawer-footer {
+    padding: 12px 18px;
+    font-size: 0.68rem; color: var(--subtext);
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── STATS ── */
+  .stats { display: flex; justify-content: center; gap: 10px; padding: 14px 16px; flex-wrap: wrap; background: var(--bg); }
+  .stat-card { background: var(--surface); border-radius: 12px; padding: 10px 18px; text-align: center; border: 1px solid var(--border); min-width: 90px; }
+  .stat-card .val { font-size: 1.5rem; font-weight: 800; color: var(--red-light); }
+  .stat-card .lbl { font-size: 0.7rem; color: var(--subtext); margin-top: 2px; }
+
+  /* ── VIEW TOGGLE ── */
+  .view-toggle { display: flex; justify-content: center; gap: 8px; padding: 0 16px 12px; background: var(--bg); }
+  .view-btn { padding: 8px 22px; border-radius: 50px; border: 2px solid var(--red); background: transparent; color: var(--red-light); font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .view-btn.active { background: var(--red); color: white; }
+  .view-btn:hover:not(.active) { background: var(--red-dark); color: white; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; overflow-x: auto; gap: 8px; padding: 0 16px 12px; background: var(--bg); scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex-shrink: 0; padding: 8px 18px; border-radius: 50px; border: 1px solid var(--border); background: var(--tab-bg); color: var(--tab-text); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .tab.active { background: var(--red); color: white; border-color: var(--red); }
+  .tab:hover:not(.active) { border-color: var(--red); color: var(--red-light); }
+
+  /* ── DAY VIEW ── */
+  .day-view { display: none; padding: 0 16px 32px; background: var(--bg); }
+  .day-view.active { display: block; }
+
+  /* ── CLASS CARD ── */
+  .class-card { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); border-left: 5px solid; transition: transform 0.15s, box-shadow 0.15s; }
+  .class-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(192,57,43,0.15); }
+  .class-time { font-size: 0.78rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; color: var(--red-light); }
+  .class-name { font-size: 1rem; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+  .class-meta-row { font-size: 0.77rem; color: var(--subtext); display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px; }
+  .class-meta-row span { display: flex; align-items: center; gap: 5px; }
+
+  /* ── TEACHER ROW ── */
+  .teacher-row { display: flex; align-items: center; gap: 12px; background: var(--meta-bg); border-radius: 10px; padding: 10px; border: 1px solid var(--border); }
+  .teacher-photo {
+    width: 54px; height: 54px; border-radius: 50%;
+    object-fit: cover; object-position: top center;
+    border: 2px solid var(--red); flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .teacher-photo:hover { transform: scale(1.08); box-shadow: 0 0 0 3px var(--red-light); }
+  .teacher-avatar { width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, var(--red-dark), #4a0000); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; border: 2px solid var(--red); }
+  .teacher-info { flex: 1; font-size: 0.78rem; color: var(--subtext); }
+  .teacher-info strong { display: block; font-size: 0.87rem; color: var(--text); margin-bottom: 3px; }
+  .teacher-info a { color: var(--red-light); text-decoration: none; }
+  .teacher-info a:hover { text-decoration: underline; }
+  .no-mail { color: var(--subtext); font-style: italic; font-size: 0.73rem; }
+
+  .badge { display: inline-block; font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; font-weight: 700; margin-top: 8px; background: var(--badge-bg); color: var(--red-light); border: 1px solid var(--red-dark); }
+  .re-note { font-size: 0.72rem; background: #2a1a00; color: #f59e0b; padding: 4px 10px; border-radius: 6px; margin-top: 8px; display: inline-block; border: 1px solid #5a3a00; }
+  [data-theme="light"] .re-note { background: #fff8e1; color: #b45309; border-color: #fbbf24; }
+  [data-theme="light"] .badge { background: #ffeaea; color: var(--red); }
+
+  .ca { border-left-color: var(--red); }
+  .cb { border-left-color: #e67e22; }
+  .cc { border-left-color: #8e44ad; }
+  .cd { border-left-color: #16a085; }
+  .ce { border-left-color: #d35400; }
+
+  /* ── WEEKLY ── */
+  #weekly-view { display: none; padding: 0 12px 32px; background: var(--bg); overflow-x: auto; }
+  .week-grid { display: grid; grid-template-columns: 64px repeat(5, 1fr); min-width: 520px; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+  .wg-header { background: var(--red-dark); color: white; font-size: 0.74rem; font-weight: 700; padding: 10px 4px; text-align: center; border-bottom: 2px solid var(--red); }
+  .wg-header:first-child { background: #1a0000; }
+  .wg-time { background: var(--surface2); font-size: 0.64rem; color: var(--subtext); font-weight: 700; padding: 8px 4px; text-align: center; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; line-height: 1.4; }
+  .wg-cell { background: var(--surface); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4px; min-height: 90px; }
+  .wg-pill { border-radius: 8px; padding: 6px 5px; font-size: 0.62rem; font-weight: 600; line-height: 1.3; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; text-align: center; transition: filter 0.15s, transform 0.15s; }
+  .wg-pill:hover { filter: brightness(1.12); transform: scale(1.03); }
+  .wg-pill img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid rgba(255,255,255,0.4); }
+  .wg-pill .pill-ico { font-size: 1.3rem; }
+  .wg-pill .pill-name { font-weight: 800; font-size: 0.63rem; }
+  .wg-pill .pill-room { opacity: 0.75; font-size: 0.57rem; }
+
+  .pa { background: #5a0000; color: #ffaaaa; border-left: 3px solid var(--red); }
+  .pb { background: #4a2000; color: #ffcc88; border-left: 3px solid #e67e22; }
+  .pc { background: #2a0050; color: #cc99ff; border-left: 3px solid #8e44ad; }
+  .pd { background: #003030; color: #88eedd; border-left: 3px solid #16a085; }
+  .pe { background: #3a1a00; color: #ffbb77; border-left: 3px solid #d35400; }
+  [data-theme="light"] .pa { background: #ffeaea; color: #7a0000; }
+  [data-theme="light"] .pb { background: #fff3e0; color: #7a3000; }
+  [data-theme="light"] .pc { background: #f3e8ff; color: #4a0070; }
+  [data-theme="light"] .pd { background: #e0f7f4; color: #004040; }
+  [data-theme="light"] .pe { background: #fff0e0; color: #5a2a00; }
+
+  /* ── MODAL (teacher detail) ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 300; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.show { display: flex; }
+  .modal { background: var(--surface); border-radius: 18px; padding: 24px; max-width: 310px; width: 100%; border: 1px solid var(--red-dark); position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(192,57,43,0.25); }
+  .modal-close { position: absolute; top: 12px; right: 14px; font-size: 1.3rem; cursor: pointer; color: var(--subtext); background: none; border: none; transition: color 0.2s; }
+  .modal-close:hover { color: var(--red-light); }
+  .modal-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: top center; display: block; margin: 0 auto 12px; border: 3px solid var(--red); cursor: pointer; transition: transform 0.2s; }
+  .modal-photo:hover { transform: scale(1.05); }
+  .modal-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--red-dark), #4a0000); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 12px; border: 3px solid var(--red); }
+  .modal h3 { text-align: center; font-size: 0.97rem; margin-bottom: 14px; color: var(--text); line-height: 1.3; }
+  .modal-divider { height: 1px; background: var(--border); margin-bottom: 12px; }
+  .modal-info { font-size: 0.8rem; color: var(--subtext); display: flex; flex-direction: column; gap: 7px; }
+  .modal-info .mi { display: flex; gap: 8px; align-items: flex-start; }
+  .modal-info a { color: var(--red-light); text-decoration: none; }
+  .modal-info a:hover { text-decoration: underline; }
+  .modal-tag { display: inline-block; font-size: 0.68rem; padding: 2px 8px; border-radius: 20px; font-weight: 700; margin-top: 10px; background: var(--badge-bg); color: var(--red-light); border: 1px solid var(--red-dark); }
+
+  /* ── LIGHTBOX ── */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 500; align-items: center; justify-content: center; cursor: zoom-out; }
+  .lightbox.show { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; object-fit: contain; border: 3px solid var(--red); box-shadow: 0 0 60px rgba(192,57,43,0.4); animation: zoomIn 0.25s ease; }
+  .lightbox-name { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; font-size: 0.85rem; font-weight: 600; background: rgba(0,0,0,0.6); padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); }
+  .lightbox-close { position: fixed; top: 16px; right: 16px; color: white; font-size: 1.8rem; cursor: pointer; background: rgba(0,0,0,0.5); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); }
+  @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .tip-hint { text-align:center; color: var(--subtext); font-size:0.72rem; margin-top:10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎓 Horario Académico</h1>
+  <p>Jose Edwin Lopez Gonzalez &nbsp;·&nbsp; Arquitectura · UT</p>
+
+  <!-- Hamburger -->
+  <button class="menu-btn" id="menuBtn" onclick="toggleDrawer()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Drawer overlay -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- Drawer -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <h3>⚙️ Menú</h3>
+    <p>Accesos rápidos y configuración</p>
+  </div>
+  <div class="drawer-body">
+
+    <div class="drawer-section-label">Apariencia</div>
+    <div class="theme-switch" onclick="toggleTheme()">
+      <div class="di-left">
+        <div class="di-icon di-red" id="themeIcon">🌙</div>
+        <div class="di-text">
+          Modo oscuro
+          <small id="themeLabel">Activo</small>
+        </div>
+      </div>
+      <div class="toggle-track on" id="toggleTrack">
+        <div class="toggle-knob"></div>
+      </div>
+    </div>
+
+    <div class="drawer-section-label">Accesos</div>
+    <a class="drawer-item" href="http://mantis.ut.edu.co:8080/tolima/hermesoft/vortal/login/login.jsp" target="_blank">
+      <div class="di-icon di-blue">🖥️</div>
+      <div class="di-text">
+        Academusoft
+        <small>Sistema académico UT</small>
+      </div>
+    </a>
+    <a class="drawer-item" href="https://chat.whatsapp.com/ENLACE_AQUI" target="_blank" id="waLink">
+      <div class="di-icon di-green">💬</div>
+      <div class="di-text">
+        Grupo WhatsApp
+        <small>Grupo 02 · Arquitectura</small>
+      </div>
+    </a>
+
+    <div class="drawer-section-label">Info</div>
+    <div class="drawer-item" style="cursor:default">
+      <div class="di-icon di-gold">📅</div>
+      <div class="di-text">
+        Semestre activo
+        <small>2025 · Arquitectura · 18 créditos</small>
+      </div>
+    </div>
+  </div>
+  <div class="drawer-footer">Universidad del Tolima · Facultad de Tecnologías</div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat-card"><div class="val">57</div><div class="lbl">Horas</div></div>
+  <div class="stat-card"><div class="val">18</div><div class="lbl">Créditos</div></div>
+  <div class="stat-card"><div class="val">7</div><div class="lbl">Materias</div></div>
+</div>
+
+<!-- View toggle -->
+<div class="view-toggle">
+  <button class="view-btn active" onclick="switchView('daily',this)">📋 Por Día</button>
+  <button class="view-btn" onclick="switchView('weekly',this)">🗓️ Semana</button>
+</div>
+
+<!-- ===== DAILY ===== -->
+<div id="daily-view">
+  <div class="tabs">
+    <button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
+    <button class="tab" onclick="showDay('martes',this)">Martes</button>
+    <button class="tab" onclick="showDay('miercoles',this)">Miércoles</button>
+    <button class="tab" onclick="showDay('jueves',this)">Jueves</button>
+    <button class="tab" onclick="showDay('viernes',this)">Viernes</button>
+  </div>
+
+  <!-- LUNES -->
+  <div class="day-view active" id="lunes">
+    <div class="class-card ca">
+      <div class="class-time">🕘 09:00 – 11:59</div>
+      <div class="class-name">Taller I</div>
+      <div class="class-meta-row">
+        <span>📍 SC-B33-TD408 · Bloque 33</span>
+        <span>🔢 Grupo 02 · Cód. 0603088</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg"
+          alt="Hernando Carvajal"
+          onclick="openLightbox(this.src,'Hernando Carvajal Morales')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>Hernando Carvajal Morales</strong>
+          ✉️ <a href="mailto:hcarvaja@ut.edu.co">hcarvaja@ut.edu.co</a>
+        </div>
+      </div>
+      <span class="badge">Sede Central</span>
+    </div>
+  </div>
+
+  <!-- MARTES -->
+  <div class="day-view" id="martes">
+    <div class="class-card cc">
+      <div class="class-time">🕘 09:00 – 11:59</div>
+      <div class="class-name">Expresión I</div>
+      <div class="class-meta-row">
+        <span>📍 SC-B33-TD407 · Bloque 33</span>
+        <span>🔢 Grupo 02 · Cód. 0603085</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE"
+          alt="John Alex Pinzón"
+          onclick="openLightbox(this.src,'John Alex Pinzón Rodríguez')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>John Alex Pinzón Rodríguez</strong>
+          <span class="no-mail">✉️ mail no encontrado</span>
+        </div>
+      </div>
+      <span class="badge">Sede Central</span>
+    </div>
+  </div>
+
+  <!-- MIÉRCOLES -->
+  <div class="day-view" id="miercoles">
+    <div class="class-card ca">
+      <div class="class-time">🕘 09:00 – 11:59</div>
+      <div class="class-name">Taller I</div>
+      <div class="class-meta-row">
+        <span>📍 SC-B33-TD408 · Bloque 33</span>
+        <span>🔢 Grupo 02 · Cód. 0603088</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg"
+          alt="Hernando Carvajal"
+          onclick="openLightbox(this.src,'Hernando Carvajal Morales')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>Hernando Carvajal Morales</strong>
+          ✉️ <a href="mailto:hcarvaja@ut.edu.co">hcarvaja@ut.edu.co</a>
+        </div>
+      </div>
+      <span class="badge">Sede Central</span>
+    </div>
+
+    <div class="class-card cb">
+      <div class="class-time">🕑 14:00 – 15:59</div>
+      <div class="class-name">Matemática de lo Cotidiano</div>
+      <div class="class-meta-row">
+        <span>📍 SC-B03-A302 · Bloque 03</span>
+        <span>🔢 Grupo Arquitectura · Cód. 0701777</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://i1.rgstatic.net/ii/profile.image/334221219516416-1456695956205_Q512/Norman-Aya-Alvarado.jpg"
+          alt="Norman Aya Alvarado"
+          onclick="openLightbox(this.src,'Norman Raul Aya Alvarado')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>Norman Raul Aya Alvarado</strong>
+          ✉️ <a href="mailto:nraya@ut.edu.co">nraya@ut.edu.co</a>
+        </div>
+      </div>
+      <span class="badge">Sede Central</span>
+    </div>
+
+    <div class="class-card cd">
+      <div class="class-time">🕓 16:00 – 17:59</div>
+      <div class="class-name">Teoría e Historia de la Arquitectura y la Ciudad</div>
+      <div class="class-meta-row">
+        <span>🔢 Grupo 02 · Cód. 0603087</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://facultadtecnologias.ut.edu.co/images/presentacion/docentes/Eduardo_Pe%C3%B1aloza_Kairuz.png"
+          alt="Eduardo Peñaloza"
+          onclick="openLightbox(this.src,'Eduardo Peñaloza Kairuz')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>Eduardo Peñaloza Kairuz</strong>
+          ✉️ <a href="mailto:epenalozak@ut.edu.co">epenalozak@ut.edu.co</a>
+        </div>
+      </div>
+      <span class="re-note">⚠️ Sin aula asignada (RE)</span>
+    </div>
+  </div>
+
+  <!-- JUEVES -->
+  <div class="day-view" id="jueves">
+    <div class="class-card ce">
+      <div class="class-time">🕘 09:00 – 11:59</div>
+      <div class="class-name">Fundamentos de Tecnología</div>
+      <div class="class-meta-row">
+        <span>🔢 Grupo 02 · Cód. 0603086</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE"
+          alt="Jairo Gaspar"
+          onclick="openLightbox(this.src,'Jairo Antonio Gaspar Leal')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>Jairo Antonio Gaspar Leal</strong>
+          ✉️ <a href="mailto:jagasparle@ut.edu.co">jagasparle@ut.edu.co</a>
+        </div>
+      </div>
+      <span class="re-note">⚠️ Sin aula asignada (RE)</span>
+    </div>
+
+    <div class="class-card cb">
+      <div class="class-time">🕑 14:00 – 15:59</div>
+      <div class="class-name">Ciencia, Sociedad y Desarrollo</div>
+      <div class="class-meta-row">
+        <span>🔢 Grupo 01 · Cód. 0702218</span>
+      </div>
+      <div class="teacher-row">
+        <div class="teacher-avatar">👤</div>
+        <div class="teacher-info">
+          <strong>Docente por confirmar</strong>
+          <span class="no-mail">✉️ mail no encontrado</span>
+        </div>
+      </div>
+      <span class="re-note">⚠️ Sin aula asignada (RE/DO)</span>
+    </div>
+
+    <div class="class-card ca">
+      <div class="class-time">🕓 16:00 – 17:59</div>
+      <div class="class-name">Escritura Académica</div>
+      <div class="class-meta-row">
+        <span>📍 SC-B32-A402 · Bloque 32</span>
+        <span>🔢 Grupo 02 · Cód. 05011106</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://cinetolima.co/wp-content/uploads/2021/03/yenny.jpg"
+          alt="Yenny García"
+          onclick="openLightbox(this.src,'Yenny Alexandra García Montaño')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>Yenny Alexandra García Montaño</strong>
+          ✉️ <a href="mailto:yennygarcia@ut.edu.co">yennygarcia@ut.edu.co</a>
+        </div>
+      </div>
+      <span class="badge">Sede Central</span>
+    </div>
+  </div>
+
+  <!-- VIERNES -->
+  <div class="day-view" id="viernes">
+    <div class="class-card ca">
+      <div class="class-time">🕘 09:00 – 11:59</div>
+      <div class="class-name">Taller I</div>
+      <div class="class-meta-row">
+        <span>📍 SC-B33-TD408 · Bloque 33</span>
+        <span>🔢 Grupo 02 · Cód. 0603088</span>
+      </div>
+      <div class="teacher-row">
+        <img class="teacher-photo" src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg"
+          alt="Hernando Carvajal"
+          onclick="openLightbox(this.src,'Hernando Carvajal Morales')"
+          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-info">
+          <strong>Hernando Carvajal Morales</strong>
+          ✉️ <a href="mailto:hcarvaja@ut.edu.co">hcarvaja@ut.edu.co</a>
+        </div>
+      </div>
+      <span class="badge">Sede Central</span>
+    </div>
+  </div>
+</div><!-- /daily -->
+
+<!-- ===== WEEKLY ===== -->
+<div id="weekly-view">
+  <div class="week-grid">
+    <div class="wg-header">Hora</div>
+    <div class="wg-header">Lunes</div>
+    <div class="wg-header">Martes</div>
+    <div class="wg-header">Miércoles</div>
+    <div class="wg-header">Jueves</div>
+    <div class="wg-header">Viernes</div>
+
+    <!-- 09-12 -->
+    <div class="wg-time">09:00<br>12:00</div>
+    <div class="wg-cell">
+      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','SC-B33-TD408, Bloque 33','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
+        <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Taller I</div><div class="pill-room">B33-TD408</div>
+      </div>
+    </div>
+    <div class="wg-cell">
+      <div class="wg-pill pc" onclick="openModal('Expresión I','09:00–11:59','SC-B33-TD407, Bloque 33','John Alex Pinzón Rodríguez','','https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE','0603085','Sede Central')">
+        <img src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Expresión I</div><div class="pill-room">B33-TD407</div>
+      </div>
+    </div>
+    <div class="wg-cell">
+      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','SC-B33-TD408, Bloque 33','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
+        <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Taller I</div><div class="pill-room">B33-TD408</div>
+      </div>
+    </div>
+    <div class="wg-cell">
+      <div class="wg-pill pe" onclick="openModal('Fundamentos de Tecnología','09:00–11:59','Sin aula asignada (RE)','Jairo Antonio Gaspar Leal','jagasparle@ut.edu.co','https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE','0603086','')">
+        <img src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Fund. Tecnología</div><div class="pill-room">Sin aula (RE)</div>
+      </div>
+    </div>
+    <div class="wg-cell">
+      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','SC-B33-TD408, Bloque 33','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
+        <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Taller I</div><div class="pill-room">B33-TD408</div>
+      </div>
+    </div>
+
+    <!-- 14-16 -->
+    <div class="wg-time">14:00<br>16:00</div>
+    <div class="wg-cell"></div>
+    <div class="wg-cell"></div>
+    <div class="wg-cell">
+      <div class="wg-pill pb" onclick="openModal('Matemática de lo Cotidiano','14:00–15:59','SC-B03-A302, Bloque 03','Norman Raul Aya Alvarado','nraya@ut.edu.co','https://i1.rgstatic.net/ii/profile.image/334221219516416-1456695956205_Q512/Norman-Aya-Alvarado.jpg','0701777','Sede Central')">
+        <img src="https://i1.rgstatic.net/ii/profile.image/334221219516416-1456695956205_Q512/Norman-Aya-Alvarado.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Matemática</div><div class="pill-room">B03-A302</div>
+      </div>
+    </div>
+    <div class="wg-cell">
+      <div class="wg-pill pb" onclick="openModal('Ciencia, Sociedad y Desarrollo','14:00–15:59','Sin aula asignada (RE/DO)','Docente por confirmar','','','0702218','')">
+        <div class="pill-ico">👤</div>
+        <div class="pill-name">Ciencia Soc.</div><div class="pill-room">Sin aula (RE)</div>
+      </div>
+    </div>
+    <div class="wg-cell"></div>
+
+    <!-- 16-18 -->
+    <div class="wg-time">16:00<br>18:00</div>
+    <div class="wg-cell"></div>
+    <div class="wg-cell"></div>
+    <div class="wg-cell">
+      <div class="wg-pill pd" onclick="openModal('Teoría e Historia de la Arquitectura','16:00–17:59','Sin aula asignada (RE)','Eduardo Peñaloza Kairuz','epenalozak@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/docentes/Eduardo_Pe%C3%B1aloza_Kairuz.png','0603087','')">
+        <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/docentes/Eduardo_Pe%C3%B1aloza_Kairuz.png" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Teoría e Historia</div><div class="pill-room">Sin aula (RE)</div>
+      </div>
+    </div>
+    <div class="wg-cell">
+      <div class="wg-pill pa" onclick="openModal('Escritura Académica','16:00–17:59','SC-B32-A402, Bloque 32','Yenny Alexandra García Montaño','yennygarcia@ut.edu.co','https://cinetolima.co/wp-content/uploads/2021/03/yenny.jpg','05011106','Sede Central')">
+        <img src="https://cinetolima.co/wp-content/uploads/2021/03/yenny.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Escritura Acad.</div><div class="pill-room">B32-A402</div>
+      </div>
+    </div>
+    <div class="wg-cell"></div>
+  </div>
+  <p class="tip-hint">💡 Toca cualquier materia para ver detalles · Toca la foto para ampliarla</p>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">✕</button>
+    <div id="modal-photo-wrap"></div>
+    <h3 id="modal-name"></h3>
+    <div class="modal-divider"></div>
+    <div class="modal-info" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-name" id="lightbox-name"></div>
+</div>
+
+<script>
+  // ── DRAWER ──
+  function toggleDrawer() {
+    const d = document.getElementById('drawer');
+    const o = document.getElementById('drawerOverlay');
+    const b = document.getElementById('menuBtn');
+    const open = d.classList.toggle('open');
+    o.classList.toggle('show', open);
+    b.classList.toggle('open', open);
+  }
+  function closeDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('show');
+    document.getElementById('menuBtn').classList.remove('open');
+  }
+
+  // ── THEME ──
+  let isDark = true;
+  function toggleTheme() {
+    isDark = !isDark;
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
+    document.getElementById('themeLabel').textContent = isDark ? 'Activo' : 'Inactivo';
+    document.getElementById('toggleTrack').classList.toggle('on', isDark);
+  }
+
+  // ── VIEW / DAY ──
+  function switchView(view, btn) {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('daily-view').style.display = view === 'daily' ? 'block' : 'none';
+    document.getElementById('weekly-view').style.display = view === 'weekly' ? 'block' : 'none';
+  }
+  function showDay(day, btn) {
+    document.querySelectorAll('.day-view').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(day).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── MODAL ──
+  function openModal(name, time, room, teacher, email, photo, code, sede) {
+    document.getElementById('modal-name').textContent = name;
+    const wrap = document.getElementById('modal-photo-wrap');
+    if (photo) {
+      wrap.innerHTML = `<img class="modal-photo" src="${photo}" alt="${teacher}"
+        onclick="openLightbox('${photo}','${teacher}')"
+        onerror="this.outerHTML='<div class=\\'modal-avatar\\'>👤</div>'">`;
+    } else {
+      wrap.innerHTML = `<div class="modal-avatar">👤</div>`;
+    }
+    const emailHtml = email
+      ? `<a href="mailto:${email}">${email}</a>`
+      : `<span style="font-style:italic;color:var(--subtext)">mail no encontrado</span>`;
+    const extra = sede
+      ? `<div class="mi">🏛️ <span>${sede}</span></div>`
+      : `<div class="mi">⚠️ <span style="color:#f59e0b">Sin aula asignada</span></div>`;
+    document.getElementById('modal-body').innerHTML = `
+      <div class="mi">🕐 <span>${time}</span></div>
+      <div class="mi">📍 <span>${room}</span></div>
+      <div class="mi">👤 <span>${teacher}</span></div>
+      <div class="mi">✉️ <span>${emailHtml}</span></div>
+      <div class="mi">🔢 <span>Cód. ${code}</span></div>
+      ${extra}
+    `;
+    document.getElementById('modal').classList.add('show');
+  }
+
+  // ── LIGHTBOX ──
+  function openLightbox(src, name) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-name').textContent = name;
+    document.getElementById('lightbox').classList.add('show');
+    document.getElementById('modal').classList.remove('show');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('show');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeLightbox();
+      document.getElementById('modal').classList.remove('show');
+      closeDrawer();
+    }
+  });
+</script>
+</body>
+</html>
