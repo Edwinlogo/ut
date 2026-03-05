@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Horario · Jose Edwin Lopez Gonzalez</title>
+<title>Horario Académico · Arquitectura UT</title>
 <style>
   :root {
     --red:       #c0392b;
@@ -277,8 +277,8 @@
 <body>
 
 <header>
-  <h1>🎓 Horario Académico</h1>
-  <p>Jose Edwin Lopez Gonzalez &nbsp;·&nbsp; Arquitectura · UT</p>
+  <h1>Horario Académico</h1>
+  <p>Arquitectura 2026 A · Universidad del Tolima</p>
 
   <!-- Hamburger -->
   <button class="menu-btn" id="menuBtn" onclick="toggleDrawer()" aria-label="Menú">
@@ -321,15 +321,28 @@
         <small>Sistema académico UT</small>
       </div>
     </a>
-    <a class="drawer-item" href="https://chat.whatsapp.com/CmkyfsA7OAwKynVfisEySf?mode=gi_t" target="_blank" id="waLink">
+	
+	
+   <a class="drawer-item" href="https://chat.whatsapp.com/Bmpusi07eOV3pLL52lKZWr?mode=gi_t" target="_blank" id="waLink">
+      <div class="di-icon di-green">
+      <img src="https://cdn-icons-png.flaticon.com/256/2111/2111728.png" style="width:22px;height:22px;object-fit:contain;">  
+      </div>
+      <div class="di-text">
+         Grupo 02 - Estudiantes
+        <small></small>
+      </div>
+    </a>
+
+<a class="drawer-item" href="https://chat.whatsapp.com/CmkyfsA7OAwKynVfisEySf?mode=gi_t" target="_blank" id="waLink">
       <div class="di-icon di-green">
       <img src="https://cdn-icons-png.flaticon.com/256/2111/2111728.png" style="width:22px;height:22px;object-fit:contain;">  
       </div>
       <div class="di-text">
         Grupo - Taller I
-        <small>Grupo 02 · Arquitectura</small>
+        <small></small>
       </div>
     </a>
+
 
     <div class="drawer-section-label">Info</div>
     <div class="drawer-item" style="cursor:default">
@@ -352,12 +365,12 @@
 
 <!-- View toggle -->
 <div class="view-toggle">
-  <button class="view-btn active" onclick="switchView('daily',this)">📋 Por Día</button>
-  <button class="view-btn" onclick="switchView('weekly',this)">🗓️ Semana</button>
+  <button class="view-btn" onclick="switchView('daily',this)">📋 Por Día</button>
+  <button class="view-btn active" onclick="switchView('weekly',this)">🗓️ Semana</button>
 </div>
 
 <!-- ===== DAILY ===== -->
-<div id="daily-view">
+<div id="daily-view" style="display:none">
   <div class="tabs">
     <button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
     <button class="tab" onclick="showDay('martes',this)">Martes</button>
@@ -372,7 +385,7 @@
       <div class="class-time">🕘 09:00 – 11:59</div>
       <div class="class-name">Taller I</div>
       <div class="class-meta-row">
-        <span>📍 SC-B33-TD408 · Bloque 33</span>
+        <span>📍 Bloque 33 - TD408</span>
         <span>🔢 Grupo 02 · Cód. 0603088</span>
       </div>
       <div class="teacher-row">
@@ -382,7 +395,7 @@
           onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
         <div class="teacher-info">
           <strong>Hernando Carvajal Morales</strong>
-          ✉️ <a href="mailto:hcarvaja@ut.edu.co">hcarvaja@ut.edu.co</a>
+          ✉️ <a href="mailto:jagasparle@ut.edu.co">jagasparle@ut.edu.co</a>
         </div>
       </div>
       <span class="badge">Sede Central</span>
@@ -395,14 +408,11 @@
       <div class="class-time">🕘 09:00 – 11:59</div>
       <div class="class-name">Expresión I</div>
       <div class="class-meta-row">
-        <span>📍 SC-B33-TD407 · Bloque 33</span>
+        <span>📍 Bloque 33 - TD407</span>
         <span>🔢 Grupo 02 · Cód. 0603085</span>
       </div>
       <div class="teacher-row">
-        <img class="teacher-photo" src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE"
-          alt="John Alex Pinzón"
-          onclick="openLightbox(this.src,'John Alex Pinzón Rodríguez')"
-          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-avatar">👤</div>
         <div class="teacher-info">
           <strong>John Alex Pinzón Rodríguez</strong>
           <span class="no-mail">✉️ mail no encontrado</span>
@@ -418,7 +428,7 @@
       <div class="class-time">🕘 09:00 – 11:59</div>
       <div class="class-name">Taller I</div>
       <div class="class-meta-row">
-        <span>📍 SC-B33-TD408 · Bloque 33</span>
+        <span>📍 Bloque 33 - TD408</span>
         <span>🔢 Grupo 02 · Cód. 0603088</span>
       </div>
       <div class="teacher-row">
@@ -428,7 +438,7 @@
           onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
         <div class="teacher-info">
           <strong>Hernando Carvajal Morales</strong>
-          ✉️ <a href="mailto:hcarvaja@ut.edu.co">hcarvaja@ut.edu.co</a>
+          ✉️ <a href="mailto:jagasparle@ut.edu.co">jagasparle@ut.edu.co</a>
         </div>
       </div>
       <span class="badge">Sede Central</span>
@@ -438,17 +448,14 @@
       <div class="class-time">🕑 14:00 – 15:59</div>
       <div class="class-name">Matemática de lo Cotidiano</div>
       <div class="class-meta-row">
-        <span>📍 SC-B03-A302 · Bloque 03</span>
+        <span>📍 Bloque 03 - A302</span>
         <span>🔢 Grupo Arquitectura · Cód. 0701777</span>
       </div>
       <div class="teacher-row">
-        <img class="teacher-photo" src="https://i1.rgstatic.net/ii/profile.image/334221219516416-1456695956205_Q512/Norman-Aya-Alvarado.jpg"
-          alt="Norman Aya Alvarado"
-          onclick="openLightbox(this.src,'Norman Raul Aya Alvarado')"
-          onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
+        <div class="teacher-avatar">👤</div>
         <div class="teacher-info">
-          <strong>Norman Raul Aya Alvarado</strong>
-          ✉️ <a href="mailto:nraya@ut.edu.co">nraya@ut.edu.co</a>
+          <strong>Marcia Carolina Rodríguez Reyes</strong>
+          ✉️ <a href="mailto:mrodriguezre@ut.edu.co">mrodriguezre@ut.edu.co</a>
         </div>
       </div>
       <span class="badge">Sede Central</span>
@@ -458,6 +465,7 @@
       <div class="class-time">🕓 16:00 – 17:59</div>
       <div class="class-name">Teoría e Historia de la Arquitectura y la Ciudad</div>
       <div class="class-meta-row">
+        <span>📍 Bloque 33 – Aula 104</span>
         <span>🔢 Grupo 02 · Cód. 0603087</span>
       </div>
       <div class="teacher-row">
@@ -467,10 +475,10 @@
           onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
         <div class="teacher-info">
           <strong>Eduardo Peñaloza Kairuz</strong>
-          ✉️ <a href="mailto:epenalozak@ut.edu.co">epenalozak@ut.edu.co</a>
+          ✉️ <a href="mailto:jagasparle@ut.edu.co">jagasparle@ut.edu.co</a>
         </div>
       </div>
-      <span class="re-note">⚠️ Sin aula asignada (RE)</span>
+      <span class="badge">Bloque 33 – 104</span>
     </div>
   </div>
 
@@ -480,10 +488,11 @@
       <div class="class-time">🕘 09:00 – 11:59</div>
       <div class="class-name">Fundamentos de Tecnología</div>
       <div class="class-meta-row">
+        <span>📍 Bloque 4 – Sala 01</span>
         <span>🔢 Grupo 02 · Cód. 0603086</span>
       </div>
       <div class="teacher-row">
-        <img class="teacher-photo" src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE"
+        <img class="teacher-photo" src="https://yt3.googleusercontent.com/ytc/AIdro_moIYOLWyfalc0pxVjqOk7o26XteGefYvbo-LE3sb3VDMI=s160-c-k-c0x00ffffff-no-rj"
           alt="Jairo Gaspar"
           onclick="openLightbox(this.src,'Jairo Antonio Gaspar Leal')"
           onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
@@ -492,30 +501,31 @@
           ✉️ <a href="mailto:jagasparle@ut.edu.co">jagasparle@ut.edu.co</a>
         </div>
       </div>
-      <span class="re-note">⚠️ Sin aula asignada (RE)</span>
+      <span class="badge">Bloque 4 – Sala 01</span>
     </div>
 
     <div class="class-card cb">
       <div class="class-time">🕑 14:00 – 15:59</div>
       <div class="class-name">Ciencia, Sociedad y Desarrollo</div>
       <div class="class-meta-row">
+        <span>📍 Auditorio de la Academia</span>
         <span>🔢 Grupo 01 · Cód. 0702218</span>
       </div>
       <div class="teacher-row">
-        <div class="teacher-avatar">👤</div>
+        <div class="teacher-avatar">👥</div>
         <div class="teacher-info">
-          <strong>Docente por confirmar</strong>
-          <span class="no-mail">✉️ mail no encontrado</span>
+          <strong>Varios docentes</strong>
+          <span class="no-mail">✉️ Rotación de docentes</span>
         </div>
       </div>
-      <span class="re-note">⚠️ Sin aula asignada (RE/DO)</span>
+      <span class="badge">Auditorio Academia</span>
     </div>
 
     <div class="class-card ca">
       <div class="class-time">🕓 16:00 – 17:59</div>
       <div class="class-name">Escritura Académica</div>
       <div class="class-meta-row">
-        <span>📍 SC-B32-A402 · Bloque 32</span>
+        <span>📍 Bloque 32 - A402</span>
         <span>🔢 Grupo 02 · Cód. 05011106</span>
       </div>
       <div class="teacher-row">
@@ -525,7 +535,7 @@
           onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
         <div class="teacher-info">
           <strong>Yenny Alexandra García Montaño</strong>
-          ✉️ <a href="mailto:yennygarcia@ut.edu.co">yennygarcia@ut.edu.co</a>
+          ✉️ <a href="mailto:jagasparle@ut.edu.co">jagasparle@ut.edu.co</a>
         </div>
       </div>
       <span class="badge">Sede Central</span>
@@ -538,7 +548,7 @@
       <div class="class-time">🕘 09:00 – 11:59</div>
       <div class="class-name">Taller I</div>
       <div class="class-meta-row">
-        <span>📍 SC-B33-TD408 · Bloque 33</span>
+        <span>📍 Bloque 33 - TD408</span>
         <span>🔢 Grupo 02 · Cód. 0603088</span>
       </div>
       <div class="teacher-row">
@@ -548,7 +558,7 @@
           onerror="this.outerHTML='<div class=\'teacher-avatar\'>👤</div>'">
         <div class="teacher-info">
           <strong>Hernando Carvajal Morales</strong>
-          ✉️ <a href="mailto:hcarvaja@ut.edu.co">hcarvaja@ut.edu.co</a>
+          ✉️ <a href="mailto:jagasparle@ut.edu.co">jagasparle@ut.edu.co</a>
         </div>
       </div>
       <span class="badge">Sede Central</span>
@@ -557,7 +567,7 @@
 </div><!-- /daily -->
 
 <!-- ===== WEEKLY ===== -->
-<div id="weekly-view">
+<div id="weekly-view" style="display:block">
   <div class="week-grid">
     <div class="wg-header">Hora</div>
     <div class="wg-header">Lunes</div>
@@ -569,31 +579,31 @@
     <!-- 09-12 -->
     <div class="wg-time">09:00<br>12:00</div>
     <div class="wg-cell">
-      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','SC-B33-TD408, Bloque 33','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
+      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','Bloque 33 - TD408','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
         <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
         <div class="pill-name">Taller I</div><div class="pill-room">B33-TD408</div>
       </div>
     </div>
     <div class="wg-cell">
-      <div class="wg-pill pc" onclick="openModal('Expresión I','09:00–11:59','SC-B33-TD407, Bloque 33','John Alex Pinzón Rodríguez','','https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE','0603085','Sede Central')">
-        <img src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+      <div class="wg-pill pc" onclick="openModal('Expresión I','09:00–11:59','Bloque 33 - TD407','John Alex Pinzón Rodríguez','','','0603085','Sede Central')">
+        <div class="pill-ico">👤</div>
         <div class="pill-name">Expresión I</div><div class="pill-room">B33-TD407</div>
       </div>
     </div>
     <div class="wg-cell">
-      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','SC-B33-TD408, Bloque 33','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
+      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','Bloque 33 - TD408','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
         <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
         <div class="pill-name">Taller I</div><div class="pill-room">B33-TD408</div>
       </div>
     </div>
     <div class="wg-cell">
-      <div class="wg-pill pe" onclick="openModal('Fundamentos de Tecnología','09:00–11:59','Sin aula asignada (RE)','Jairo Antonio Gaspar Leal','jagasparle@ut.edu.co','https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE','0603086','')">
-        <img src="https://media.licdn.com/dms/image/v2/C5603AQE8BUfoRi-fzQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1572556040037?e=2147483647&v=beta&t=cW92mbuUfTseF2x6LO4fxdTt5eBkhHPO_ikNLXw00HE" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
-        <div class="pill-name">Fund. Tecnología</div><div class="pill-room">Sin aula (RE)</div>
+      <div class="wg-pill pe" onclick="openModal('Fundamentos de Tecnología','09:00–11:59','Bloque 4 – Sala 01','Jairo Antonio Gaspar Leal','jagasparle@ut.edu.co','https://yt3.googleusercontent.com/ytc/AIdro_moIYOLWyfalc0pxVjqOk7o26XteGefYvbo-LE3sb3VDMI=s160-c-k-c0x00ffffff-no-rj','0603086','')">
+        <img src="https://yt3.googleusercontent.com/ytc/AIdro_moIYOLWyfalc0pxVjqOk7o26XteGefYvbo-LE3sb3VDMI=s160-c-k-c0x00ffffff-no-rj" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+        <div class="pill-name">Fund. Tecnología</div><div class="pill-room">B4 – Sala 01</div>
       </div>
     </div>
     <div class="wg-cell">
-      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','SC-B33-TD408, Bloque 33','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
+      <div class="wg-pill pa" onclick="openModal('Taller I','09:00–11:59','Bloque 33 - TD408','Hernando Carvajal Morales','hcarvaja@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg','0603088','Sede Central')">
         <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/Hernando_carvajal.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
         <div class="pill-name">Taller I</div><div class="pill-room">B33-TD408</div>
       </div>
@@ -604,15 +614,15 @@
     <div class="wg-cell"></div>
     <div class="wg-cell"></div>
     <div class="wg-cell">
-      <div class="wg-pill pb" onclick="openModal('Matemática de lo Cotidiano','14:00–15:59','SC-B03-A302, Bloque 03','Norman Raul Aya Alvarado','nraya@ut.edu.co','https://i1.rgstatic.net/ii/profile.image/334221219516416-1456695956205_Q512/Norman-Aya-Alvarado.jpg','0701777','Sede Central')">
-        <img src="https://i1.rgstatic.net/ii/profile.image/334221219516416-1456695956205_Q512/Norman-Aya-Alvarado.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
+      <div class="wg-pill pb" onclick="openModal('Matemática de lo Cotidiano','14:00–15:59','Bloque 03 - A302','Marcia Carolina Rodríguez Reyes','mrodriguezre@ut.edu.co','','0701777','Sede Central')">
+        <div class="pill-ico">👤</div>
         <div class="pill-name">Matemática</div><div class="pill-room">B03-A302</div>
       </div>
     </div>
     <div class="wg-cell">
-      <div class="wg-pill pb" onclick="openModal('Ciencia, Sociedad y Desarrollo','14:00–15:59','Sin aula asignada (RE/DO)','Docente por confirmar','','','0702218','')">
+      <div class="wg-pill pb" onclick="openModal('Ciencia, Sociedad y Desarrollo','14:00–15:59','Auditorio de la Academia','Varios docentes','','','0702218','Auditorio Academia')">
         <div class="pill-ico">👤</div>
-        <div class="pill-name">Ciencia Soc.</div><div class="pill-room">Sin aula (RE)</div>
+        <div class="pill-name">Ciencia Soc.</div><div class="pill-room">Auditorio</div>
       </div>
     </div>
     <div class="wg-cell"></div>
@@ -622,13 +632,13 @@
     <div class="wg-cell"></div>
     <div class="wg-cell"></div>
     <div class="wg-cell">
-      <div class="wg-pill pd" onclick="openModal('Teoría e Historia de la Arquitectura','16:00–17:59','Sin aula asignada (RE)','Eduardo Peñaloza Kairuz','epenalozak@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/docentes/Eduardo_Pe%C3%B1aloza_Kairuz.png','0603087','')">
+      <div class="wg-pill pd" onclick="openModal('Teoría e Historia de la Arquitectura','16:00–17:59','Bloque 33 – Aula 104','Eduardo Peñaloza Kairuz','epenalozak@ut.edu.co','https://facultadtecnologias.ut.edu.co/images/presentacion/docentes/Eduardo_Pe%C3%B1aloza_Kairuz.png','0603087','Bloque 33 – 104')">
         <img src="https://facultadtecnologias.ut.edu.co/images/presentacion/docentes/Eduardo_Pe%C3%B1aloza_Kairuz.png" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
-        <div class="pill-name">Teoría e Historia</div><div class="pill-room">Sin aula (RE)</div>
+        <div class="pill-name">Teoría e Historia</div><div class="pill-room">B33 – 104</div>
       </div>
     </div>
     <div class="wg-cell">
-      <div class="wg-pill pa" onclick="openModal('Escritura Académica','16:00–17:59','SC-B32-A402, Bloque 32','Yenny Alexandra García Montaño','yennygarcia@ut.edu.co','https://cinetolima.co/wp-content/uploads/2021/03/yenny.jpg','05011106','Sede Central')">
+      <div class="wg-pill pa" onclick="openModal('Escritura Académica','16:00–17:59','Bloque 32 - A402','Yenny Alexandra García Montaño','yennygarcia@ut.edu.co','https://cinetolima.co/wp-content/uploads/2021/03/yenny.jpg','05011106','Sede Central')">
         <img src="https://cinetolima.co/wp-content/uploads/2021/03/yenny.jpg" onerror="this.outerHTML='<div class=\'pill-ico\'>👤</div>'" alt="">
         <div class="pill-name">Escritura Acad.</div><div class="pill-room">B32-A402</div>
       </div>
@@ -734,6 +744,7 @@
   function closeLightbox() {
     document.getElementById('lightbox').classList.remove('show');
   }
+
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeLightbox();
@@ -741,6 +752,6 @@
       closeDrawer();
     }
   });
-</script>
+</script> 
 </body>
 </html>
