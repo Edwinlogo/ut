@@ -122,10 +122,10 @@ const SCHEDULE_DATA = {
         photo: 'https://facultadtecnologias.ut.edu.co/images/presentacion/docentes/Eduardo_Pe%C3%B1aloza_Kairuz.png'
       },
       schedule: [
-        { day: 'miercoles', time: '16:00 – 17:59', room: 'Bloque 33 – Aula 104', sede: 'Bloque 33 – 104', slot: '16-18' }
+        { day: 'miercoles', time: '16:00 – 17:59', room: 'Bloque 31B - Aula A308', sede: 'Bloque 31B – A308', slot: '16-18' }
       ],
       pillName: 'Teoría e Historia',
-      pillRoom: 'B33 – 104',
+      pillRoom: 'B31B – A308',
       whatsapp: '',
       drive: 'https://drive.google.com/drive/folders/1c9BlpcoZFT6jjxBHEWRcU6zTkBZjZbPe'
     },
