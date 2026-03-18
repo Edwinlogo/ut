@@ -16,6 +16,31 @@
 
 
 /* ──────────────────────────────────────────────────────────────
+   0. HELPER — Obtener el día actual en zona horaria de Colombia
+   Retorna el ID del día ('lunes','martes',...,'viernes') o null
+   si es fin de semana (sábado/domingo).
+   ────────────────────────────────────────────────────────────── */
+function getTodayId() {
+  // Usamos la zona horaria de Colombia (UTC-5)
+  const now = new Date();
+  const colombiaOptions = { timeZone: 'America/Bogota', weekday: 'long' };
+  const dayName = now.toLocaleDateString('es-CO', colombiaOptions).toLowerCase();
+
+  // Mapeo de nombre completo a ID usado en SCHEDULE_DATA
+  const dayMap = {
+    'lunes': 'lunes',
+    'martes': 'martes',
+    'miércoles': 'miercoles',
+    'miercoles': 'miercoles',
+    'jueves': 'jueves',
+    'viernes': 'viernes'
+  };
+
+  return dayMap[dayName] || null; // null = sábado/domingo
+}
+
+
+/* ──────────────────────────────────────────────────────────────
    INICIALIZACIÓN
    Se ejecuta cuando el DOM termina de cargar.
    Genera todo el contenido dinámicamente desde SCHEDULE_DATA.
@@ -26,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderDailyView();   // Genera las tarjetas por día
   renderWeeklyView();  // Genera la grilla semanal
   setupKeyboardShortcuts(); // Configura atajos de teclado
+  highlightTodayInDailyTabs(); // Marca el tab del día actual en la vista diaria
 });
 
 
@@ -185,12 +211,16 @@ function renderWeeklyView() {
   const container = document.getElementById('weekly-grid');
   if (!container) return;
 
+  const todayId = getTodayId(); // Día vigente en Colombia
   let html = '';
 
   // --- Encabezados: "Hora" + los 5 días ---
   html += '<div class="wg-header">Hora</div>';
   SCHEDULE_DATA.days.forEach(function(day) {
-    html += `<div class="wg-header">${day.label}</div>`;
+    const isToday = day.id === todayId;
+    const todayClass = isToday ? ' wg-header-today' : '';
+    const todayLabel = isToday ? `<span class="today-badge">HOY</span>` : '';
+    html += `<div class="wg-header${todayClass}">${day.label}${todayLabel}</div>`;
   });
 
   // --- Filas: una por cada franja horaria ---
@@ -201,13 +231,14 @@ function renderWeeklyView() {
     // Para cada día, buscar si hay materia en esta franja
     SCHEDULE_DATA.days.forEach(function(day) {
       const match = findSubjectForSlot(day.id, slot.id);
+      const todayClass = day.id === todayId ? ' wg-cell-today' : '';
 
       if (match) {
         // Hay materia → renderizar pill con datos
-        html += buildWeeklyPill(match.subject, match.sched);
+        html += buildWeeklyPill(match.subject, match.sched, todayClass);
       } else {
         // Sin materia → celda vacía
-        html += '<div class="wg-cell"></div>';
+        html += `<div class="wg-cell${todayClass}"></div>`;
       }
     });
   });
@@ -244,8 +275,9 @@ function findSubjectForSlot(dayId, slotId) {
  * @param {Object} sched   - Datos del bloque horario
  * @returns {string} HTML de la celda con el pill
  */
-function buildWeeklyPill(subject, sched) {
+function buildWeeklyPill(subject, sched, todayClass) {
   const teacher = subject.teacher;
+  todayClass = todayClass || '';
 
   // Foto del docente o emoji por defecto
   let photoHtml;
@@ -274,7 +306,7 @@ function buildWeeklyPill(subject, sched) {
   }).join(',');
 
   return `
-    <div class="wg-cell">
+    <div class="wg-cell${todayClass}">
       <div class="wg-pill ${subject.pillColor}" onclick="openModal(${onclickArgs})">
         ${photoHtml}
         <div class="pill-name">${subject.pillName}</div>
@@ -338,6 +370,7 @@ function toggleTheme() {
 /* ──────────────────────────────────────────────────────────────
    7. CAMBIO DE VISTA (DIARIA ↔ SEMANAL)
    Muestra una vista y oculta la otra.
+   Al abrir la vista diaria, se selecciona el día vigente.
    ────────────────────────────────────────────────────────────── */
 
 /**
@@ -357,6 +390,51 @@ function switchView(view, btn) {
   // Mostrar/ocultar las vistas
   document.getElementById('daily-view').style.display  = view === 'daily'  ? 'block' : 'none';
   document.getElementById('weekly-view').style.display = view === 'weekly' ? 'block' : 'none';
+
+  // Si es vista diaria → seleccionar el día actual de Colombia
+  if (view === 'daily') {
+    selectTodayTab();
+  }
+}
+
+
+/**
+ * Selecciona el tab del día actual (Colombia) en la vista diaria.
+ * Si es fin de semana, se queda en lunes por defecto.
+ */
+function selectTodayTab() {
+  const todayId = getTodayId();
+  if (!todayId) return; // Fin de semana: mantener la selección por defecto (lunes)
+
+  // Buscar el tab correspondiente al día actual
+  const tabs = document.querySelectorAll('.tabs .tab');
+  const dayIds = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+
+  tabs.forEach(function(tab, index) {
+    if (dayIds[index] === todayId) {
+      // Simular clic en el tab del día actual
+      showDay(todayId, tab);
+    }
+  });
+}
+
+
+/**
+ * Resalta visualmente el tab del día actual en la vista diaria.
+ * Añade un indicador "hoy" al tab correspondiente.
+ */
+function highlightTodayInDailyTabs() {
+  const todayId = getTodayId();
+  if (!todayId) return;
+
+  const tabs = document.querySelectorAll('.tabs .tab');
+  const dayIds = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+
+  tabs.forEach(function(tab, index) {
+    if (dayIds[index] === todayId) {
+      tab.classList.add('tab-today');
+    }
+  });
 }
 
 
