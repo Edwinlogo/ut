@@ -287,3 +287,41 @@ const SCHEDULE_DATA = {
     { id: 'viernes',   label: 'Viernes',    tabLabel: 'Viernes' }
   ]
 };
+
+/* ──────────────────────────────────────────────────────────────
+   LÓGICA DINÁMICA: Alternar aula para Fundamentos de Tecnología
+   ────────────────────────────────────────────────────────────── */
+(function() {
+  /**
+   * Obtiene el número de semana del año (ISO).
+   * @param {Date} date Fecha a evaluar
+   * @returns {number} Número de semana
+   */
+  function getWeekNumber(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  }
+
+  const now = new Date();
+  const weekNumber = getWeekNumber(now);
+  
+  // Semana par => Bloque 33 - Aula 103 (19 de Marzo 2026 es semana 12)
+  // Semana impar => Bloque 4 - Sala 01
+  const isEvenWeek = (weekNumber % 2 === 0);
+  
+  const fund = SCHEDULE_DATA.subjects.find(function(s) { return s.id === 'fundamentos'; });
+  if (fund && fund.schedule.length > 0) {
+    if (isEvenWeek) {
+      fund.schedule[0].room = 'Bloque 33 - Aula 103';
+      fund.schedule[0].sede = 'Bloque 33 - Aula 103';
+      fund.pillRoom = 'B33 - 103';
+    } else {
+      fund.schedule[0].room = 'Bloque 4 - Sala 01';
+      fund.schedule[0].sede = 'Bloque 4 - Sala 01';
+      fund.pillRoom = 'B4 - Sala 01';
+    }
+  }
+})();
