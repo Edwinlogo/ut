@@ -169,13 +169,16 @@ function buildClassCard(subject, sched) {
 
   // Enlaces rápidos de la materia (WhatsApp y/o Drive)
   let linksHtml = '';
-  if (subject.whatsapp || subject.drive) {
+  if (subject.whatsapp || subject.drive || subject.drive2) {
     linksHtml = '<div class="class-links">';
     if (subject.whatsapp) {
       linksHtml += `<a href="${subject.whatsapp}" target="_blank" class="class-link class-link-wa"><img src="https://cdn-icons-png.flaticon.com/256/2111/2111728.png" class="link-icon" alt=""> Grupo WhatsApp</a>`;
     }
     if (subject.drive) {
       linksHtml += `<a href="${subject.drive}" target="_blank" class="class-link class-link-drive"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968523.png" class="link-icon" alt=""> Carpeta Drive</a>`;
+    }
+    if (subject.drive2) {
+      linksHtml += `<a href="${subject.drive2}" target="_blank" class="class-link class-link-drive"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968523.png" class="link-icon" alt=""> ${subject.drive2Label || 'Carpeta Drive 2'}</a>`;
     }
     linksHtml += '</div>';
   }
@@ -299,7 +302,9 @@ function buildWeeklyPill(subject, sched, todayClass) {
     subject.code,
     sched.sede,
     subject.whatsapp || '',
-    subject.drive || ''
+    subject.drive || '',
+    subject.drive2 || '',
+    subject.drive2Label || ''
   ].map(function(arg) {
     // Escapar comillas simples para evitar romper el onclick
     return "'" + String(arg).replace(/'/g, "\\'") + "'";
@@ -484,7 +489,7 @@ function showDay(day, btn) {
  * @param {string} whatsapp - URL del grupo de WhatsApp (opcional)
  * @param {string} drive    - URL de la carpeta de Drive (opcional)
  */
-function openModal(name, time, room, teacher, email, photo, code, sede, whatsapp, drive) {
+function openModal(name, time, room, teacher, email, photo, code, sede, whatsapp, drive, drive2, drive2Label) {
   // Título del modal
   document.getElementById('modal-name').textContent = name;
 
@@ -510,13 +515,16 @@ function openModal(name, time, room, teacher, email, photo, code, sede, whatsapp
 
   // Enlaces rápidos: WhatsApp y/o Drive (solo si existen)
   let linksHtml = '';
-  if (whatsapp || drive) {
+  if (whatsapp || drive || drive2) {
     linksHtml = '<div class="modal-divider"></div><div class="modal-links">';
     if (whatsapp) {
       linksHtml += `<a href="${whatsapp}" target="_blank" class="modal-link modal-link-wa"><img src="https://cdn-icons-png.flaticon.com/256/2111/2111728.png" class="link-icon" alt=""> Grupo WhatsApp</a>`;
     }
     if (drive) {
       linksHtml += `<a href="${drive}" target="_blank" class="modal-link modal-link-drive"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968523.png" class="link-icon" alt=""> Carpeta Drive</a>`;
+    }
+    if (drive2) {
+      linksHtml += `<a href="${drive2}" target="_blank" class="modal-link modal-link-drive"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968523.png" class="link-icon" alt=""> ${drive2Label || 'Carpeta Drive 2'}</a>`;
     }
     linksHtml += '</div>';
   }

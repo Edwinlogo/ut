@@ -85,7 +85,9 @@ const SCHEDULE_DATA = {
       pillName: 'Expresión I',
       pillRoom: 'B33-TD407',
       whatsapp: '',
-      drive: 'https://drive.google.com/drive/folders/1wZFyyKXDX2pMZ9juDPyxzT526DajHj0I'
+      drive: 'https://drive.google.com/drive/folders/1wZFyyKXDX2pMZ9juDPyxzT526DajHj0I',
+      drive2: 'https://drive.google.com/drive/u/2/folders/1VGi_QMDEsHiapPhoFE-oCFQzhO2gCIGMlLWGC3Kvdb5BYJ5ksTnga2aFkn4x0-G-AoKmkhlt',
+      drive2Label: 'Arquitectura'
     },
 
     {
@@ -250,6 +252,13 @@ const SCHEDULE_DATA = {
       label: 'Drive - Expresión I',
       sub: 'Carpeta de clase',
       url: 'https://drive.google.com/drive/folders/1wZFyyKXDX2pMZ9juDPyxzT526DajHj0I',
+      iconBg: 'di-blue',
+      iconImg: 'https://cdn-icons-png.flaticon.com/512/5968/5968523.png'
+    },
+    {
+      label: 'Drive - Arquitectura',
+      sub: 'Carpeta de clase',
+      url: 'https://drive.google.com/drive/u/2/folders/1VGi_QMDEsHiapPhoFE-oCFQzhO2gCIGMlLWGC3Kvdb5BYJ5ksTnga2aFkn4x0-G-AoKmkhlt',
       iconBg: 'di-blue',
       iconImg: 'https://cdn-icons-png.flaticon.com/512/5968/5968523.png'
     },
