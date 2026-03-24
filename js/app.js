@@ -83,13 +83,17 @@ function renderDrawerLinks() {
   const container = document.getElementById('drawer-links');
   if (!container) return;
 
-  // Para cada enlace en los datos, creamos un <a> con ícono y texto
   let html = '';
-  SCHEDULE_DATA.links.forEach(function(link) {
+
+  // 1. Render general (standalone) links
+  SCHEDULE_DATA.generalLinks.forEach(function(link) {
+    var iconContent = link.iconImg
+      ? `<img src="${link.iconImg}" style="width:22px;height:22px;object-fit:contain;" alt="">`
+      : (link.iconEmoji || '🔗');
     html += `
       <a class="drawer-item" href="${link.url}" target="_blank">
         <div class="di-icon ${link.iconBg}">
-          <img src="${link.iconImg}" style="width:22px;height:22px;object-fit:contain;" alt="">
+          ${iconContent}
         </div>
         <div class="di-text">
           ${link.label}
@@ -99,7 +103,44 @@ function renderDrawerLinks() {
     `;
   });
 
+  // 2. Render collapsible groups
+  SCHEDULE_DATA.linkGroups.forEach(function(group, index) {
+    var groupId = 'drawer-group-' + index;
+    html += `
+      <div class="drawer-group">
+        <button class="drawer-group-header" onclick="toggleDrawerGroup('${groupId}', this)" aria-expanded="false">
+          <div class="di-icon ${group.groupBg}">
+            <img src="${group.groupIcon}" style="width:22px;height:22px;object-fit:contain;" alt="">
+          </div>
+          <div class="di-text">${group.groupName} <small>${group.items.length} enlaces</small></div>
+          <span class="drawer-group-arrow">▸</span>
+        </button>
+        <div class="drawer-group-items" id="${groupId}">
+    `;
+    group.items.forEach(function(item) {
+      html += `
+        <a class="drawer-subitem" href="${item.url}" target="_blank">
+          <span class="drawer-subitem-dot"></span>
+          ${item.label}
+        </a>
+      `;
+    });
+    html += '</div></div>';
+  });
+
   container.innerHTML = html;
+}
+
+/**
+ * Alterna la visibilidad de un grupo colapsable en el drawer.
+ * @param {string} groupId - ID del contenedor de ítems
+ * @param {HTMLElement} btn - botón del header del grupo
+ */
+function toggleDrawerGroup(groupId, btn) {
+  var items = document.getElementById(groupId);
+  var isOpen = items.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  btn.setAttribute('aria-expanded', isOpen);
 }
 
 
@@ -167,9 +208,9 @@ function buildClassCard(subject, sched) {
     emailHtml = `<span class="no-mail">✉️ mail no encontrado</span>`;
   }
 
-  // Enlaces rápidos de la materia (WhatsApp y/o Drive)
+  // Enlaces rápidos de la materia (WhatsApp, Drive y/o Classroom)
   let linksHtml = '';
-  if (subject.whatsapp || subject.drive || subject.drive2) {
+  if (subject.whatsapp || subject.drive || subject.drive2 || subject.classroom) {
     linksHtml = '<div class="class-links">';
     if (subject.whatsapp) {
       linksHtml += `<a href="${subject.whatsapp}" target="_blank" class="class-link class-link-wa"><img src="https://cdn-icons-png.flaticon.com/256/2111/2111728.png" class="link-icon" alt=""> Grupo WhatsApp</a>`;
@@ -179,6 +220,9 @@ function buildClassCard(subject, sched) {
     }
     if (subject.drive2) {
       linksHtml += `<a href="${subject.drive2}" target="_blank" class="class-link class-link-drive"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968523.png" class="link-icon" alt=""> ${subject.drive2Label || 'Carpeta Drive 2'}</a>`;
+    }
+    if (subject.classroom) {
+      linksHtml += `<a href="${subject.classroom}" target="_blank" class="class-link class-link-classroom"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Google_Classroom_Logo.svg/250px-Google_Classroom_Logo.svg.png" class="link-icon" alt=""> Classroom</a>`;
     }
     linksHtml += '</div>';
   }
@@ -291,7 +335,7 @@ function buildWeeklyPill(subject, sched, todayClass) {
   }
 
   // Al hacer clic en el pill → abre el modal con los detalles
-  // Incluimos whatsapp y drive como los últimos 2 argumentos
+  // Incluimos whatsapp, drive y classroom como argumentos
   const onclickArgs = [
     subject.name,
     sched.time,
@@ -304,7 +348,8 @@ function buildWeeklyPill(subject, sched, todayClass) {
     subject.whatsapp || '',
     subject.drive || '',
     subject.drive2 || '',
-    subject.drive2Label || ''
+    subject.drive2Label || '',
+    subject.classroom || ''
   ].map(function(arg) {
     // Escapar comillas simples para evitar romper el onclick
     return "'" + String(arg).replace(/'/g, "\\'") + "'";
@@ -489,7 +534,7 @@ function showDay(day, btn) {
  * @param {string} whatsapp - URL del grupo de WhatsApp (opcional)
  * @param {string} drive    - URL de la carpeta de Drive (opcional)
  */
-function openModal(name, time, room, teacher, email, photo, code, sede, whatsapp, drive, drive2, drive2Label) {
+function openModal(name, time, room, teacher, email, photo, code, sede, whatsapp, drive, drive2, drive2Label, classroom) {
   // Título del modal
   document.getElementById('modal-name').textContent = name;
 
@@ -513,9 +558,9 @@ function openModal(name, time, room, teacher, email, photo, code, sede, whatsapp
     ? `<div class="mi">🏛️ <span>${sede}</span></div>`
     : '<div class="mi">⚠️ <span style="color:#f59e0b">Sin aula asignada</span></div>';
 
-  // Enlaces rápidos: WhatsApp y/o Drive (solo si existen)
+  // Enlaces rápidos: WhatsApp, Drive y/o Classroom (solo si existen)
   let linksHtml = '';
-  if (whatsapp || drive || drive2) {
+  if (whatsapp || drive || drive2 || classroom) {
     linksHtml = '<div class="modal-divider"></div><div class="modal-links">';
     if (whatsapp) {
       linksHtml += `<a href="${whatsapp}" target="_blank" class="modal-link modal-link-wa"><img src="https://cdn-icons-png.flaticon.com/256/2111/2111728.png" class="link-icon" alt=""> Grupo WhatsApp</a>`;
@@ -525,6 +570,9 @@ function openModal(name, time, room, teacher, email, photo, code, sede, whatsapp
     }
     if (drive2) {
       linksHtml += `<a href="${drive2}" target="_blank" class="modal-link modal-link-drive"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968523.png" class="link-icon" alt=""> ${drive2Label || 'Carpeta Drive 2'}</a>`;
+    }
+    if (classroom) {
+      linksHtml += `<a href="${classroom}" target="_blank" class="modal-link modal-link-classroom"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Google_Classroom_Logo.svg/250px-Google_Classroom_Logo.svg.png" class="link-icon" alt=""> Classroom</a>`;
     }
     linksHtml += '</div>';
   }

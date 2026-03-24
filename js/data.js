@@ -87,7 +87,8 @@ const SCHEDULE_DATA = {
       whatsapp: '',
       drive: 'https://drive.google.com/drive/folders/1wZFyyKXDX2pMZ9juDPyxzT526DajHj0I',
       drive2: 'https://drive.google.com/drive/u/2/folders/1VGi_QMDEsHiapPhoFE-oCFQzhO2gCIGMlLWGC3Kvdb5BYJ5ksTnga2aFkn4x0-G-AoKmkhlt',
-      drive2Label: 'Arquitectura'
+      drive2Label: 'Arquitectura',
+      classroom: 'https://classroom.google.com/u/2/c/NzkyMTExMTM1Nzc2'
     },
 
     {
@@ -205,7 +206,8 @@ const SCHEDULE_DATA = {
        iconImg → URL del ícono (si usa imagen en lugar de emoji)
        iconEmoji → emoji alternativo (si no hay imagen)
   */
-  links: [
+  /* Enlaces individuales (sin grupo) */
+  generalLinks: [
     {
       label: 'Academusoft',
       sub: 'Sistema académico UT',
@@ -214,67 +216,46 @@ const SCHEDULE_DATA = {
       iconImg: 'https://d17nlwiklbtu7t.cloudfront.net/27692/club/logo/square_1663687865-4-0026-8090-Universidad_del_Tolima_Logo_forma_2.png'
     },
     {
-      label: 'Grupo 02 - Estudiantes',
-      sub: '',
-      url: 'https://chat.whatsapp.com/Bmpusi07eOV3pLL52lKZWr?mode=gi_t',
-      iconBg: 'di-green',
-      iconImg: 'https://cdn-icons-png.flaticon.com/256/2111/2111728.png'
+      label: 'Mapa UT',
+      sub: 'Mapa del campus',
+      url: 'https://drive.google.com/file/d/1yKrzaJZDfDjXHmcLvEgmnbd9vGx4p4zr/view?usp=sharing',
+      iconBg: 'di-gold',
+      iconEmoji: '📍'
+    }
+  ],
+
+  /* Grupos colapsables del drawer */
+  linkGroups: [
+    {
+      groupName: 'WhatsApp',
+      groupIcon: 'https://cdn-icons-png.flaticon.com/256/2111/2111728.png',
+      groupBg: 'di-green',
+      items: [
+        { label: 'Grupo 02 - Estudiantes', url: 'https://chat.whatsapp.com/Bmpusi07eOV3pLL52lKZWr?mode=gi_t' },
+        { label: 'Grupo - Taller I', url: 'https://chat.whatsapp.com/Jdzk1sNzifV1rpILPx75VR?mode=gi_t' },
+        { label: 'Escritura Académica | Grupo 2', url: 'https://chat.whatsapp.com/D7lIkjk8llBC77LvvhjjGz' },
+        { label: 'Fundamentos - Grupo 2, A-2026', url: 'https://chat.whatsapp.com/DZ6ZdW0RkUNDo1HoGxwElf' },
+        { label: 'G02- Matemáticas de lo Cotidiano', url: 'https://chat.whatsapp.com/H3ZbG0sfSGxKuSo0vVdcv5' }
+      ]
     },
     {
-      label: 'Grupo - Taller I',
-      sub: '',
-      url: 'https://chat.whatsapp.com/Jdzk1sNzifV1rpILPx75VR?mode=gi_t',
-      iconBg: 'di-green',
-      iconImg: 'https://cdn-icons-png.flaticon.com/256/2111/2111728.png'
+      groupName: 'Google Drive',
+      groupIcon: 'https://cdn-icons-png.flaticon.com/512/5968/5968523.png',
+      groupBg: 'di-blue',
+      items: [
+        { label: 'Expresión I', url: 'https://drive.google.com/drive/folders/1wZFyyKXDX2pMZ9juDPyxzT526DajHj0I' },
+        { label: 'Arquitectura', url: 'https://drive.google.com/drive/u/2/folders/1VGi_QMDEsHiapPhoFE-oCFQzhO2gCIGMlLWGC3Kvdb5BYJ5ksTnga2aFkn4x0-G-AoKmkhlt' },
+        { label: 'Taller I', url: 'https://drive.google.com/drive/folders/1wjYLWKjbu26sRu060xzgiVXOuFmxYnmZ' },
+        { label: 'Teoría A&C', url: 'https://drive.google.com/drive/folders/1c9BlpcoZFT6jjxBHEWRcU6zTkBZjZbPe' }
+      ]
     },
     {
-      label: 'Escritura Académica | Grupo 2',
-      sub: '',
-      url: 'https://chat.whatsapp.com/D7lIkjk8llBC77LvvhjjGz',
-      iconBg: 'di-green',
-      iconImg: 'https://cdn-icons-png.flaticon.com/256/2111/2111728.png'
-    },
-    {
-      label: 'Fundamentos - Grupo 2, A-2026',
-      sub: '',
-      url: 'https://chat.whatsapp.com/DZ6ZdW0RkUNDo1HoGxwElf',
-      iconBg: 'di-green',
-      iconImg: 'https://cdn-icons-png.flaticon.com/256/2111/2111728.png'
-    },
-    {
-      label: 'G02- Matemáticas de lo Cotidiano',
-      sub: '',
-      url: 'https://chat.whatsapp.com/H3ZbG0sfSGxKuSo0vVdcv5',
-      iconBg: 'di-green',
-      iconImg: 'https://cdn-icons-png.flaticon.com/256/2111/2111728.png'
-    },
-    {
-      label: 'Drive - Expresión I',
-      sub: 'Carpeta de clase',
-      url: 'https://drive.google.com/drive/folders/1wZFyyKXDX2pMZ9juDPyxzT526DajHj0I',
-      iconBg: 'di-blue',
-      iconImg: 'https://cdn-icons-png.flaticon.com/512/5968/5968523.png'
-    },
-    {
-      label: 'Drive - Arquitectura',
-      sub: 'Carpeta de clase',
-      url: 'https://drive.google.com/drive/u/2/folders/1VGi_QMDEsHiapPhoFE-oCFQzhO2gCIGMlLWGC3Kvdb5BYJ5ksTnga2aFkn4x0-G-AoKmkhlt',
-      iconBg: 'di-blue',
-      iconImg: 'https://cdn-icons-png.flaticon.com/512/5968/5968523.png'
-    },
-    {
-      label: 'Drive - Taller I',
-      sub: 'Carpeta de clase',
-      url: 'https://drive.google.com/drive/folders/1wjYLWKjbu26sRu060xzgiVXOuFmxYnmZ',
-      iconBg: 'di-blue',
-      iconImg: 'https://cdn-icons-png.flaticon.com/512/5968/5968523.png'
-    },
-    {
-      label: 'Drive - Teoría A&C',
-      sub: 'Carpeta de clase',
-      url: 'https://drive.google.com/drive/folders/1c9BlpcoZFT6jjxBHEWRcU6zTkBZjZbPe',
-      iconBg: 'di-blue',
-      iconImg: 'https://cdn-icons-png.flaticon.com/512/5968/5968523.png'
+      groupName: 'Classroom',
+      groupIcon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Google_Classroom_Logo.svg/250px-Google_Classroom_Logo.svg.png',
+      groupBg: 'di-classroom',
+      items: [
+        { label: 'Expresión I', url: 'https://classroom.google.com/u/2/c/NzkyMTExMTM1Nzc2' }
+      ]
     }
   ],
 

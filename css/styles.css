@@ -239,11 +239,13 @@ header p {
 .di-green { background: #0a2a0a; }
 .di-blue  { background: #0a1a2a; }
 .di-gold  { background: #2a1a00; }
+.di-classroom { background: #0a2a1a; }
 
 /* Colores de ícono en tema claro */
 [data-theme="light"] .di-green { background: #e8f5e9; }
 [data-theme="light"] .di-blue  { background: #e3f2fd; }
 [data-theme="light"] .di-gold  { background: #fff8e1; }
+[data-theme="light"] .di-classroom { background: #e8f5e9; }
 
 /* Texto pequeño debajo del título de cada ítem */
 .drawer-item .di-text small {
@@ -252,6 +254,87 @@ header p {
   font-weight: 400;
   color: var(--subtext);
   margin-top: 1px;
+}
+
+/* --- Grupos colapsables del drawer --- */
+.drawer-group {
+  border-bottom: 1px solid var(--border);
+}
+
+/* Header del grupo (botón que abre/cierra) */
+.drawer-group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s;
+}
+.drawer-group-header:hover { background: var(--surface2); }
+
+.drawer-group-header .di-text {
+  flex: 1;
+}
+.drawer-group-header .di-text small {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--subtext);
+  margin-top: 1px;
+}
+
+/* Flecha indicadora ▸ / ▾ */
+.drawer-group-arrow {
+  font-size: 0.9rem;
+  color: var(--subtext);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.drawer-group-header.open .drawer-group-arrow {
+  transform: rotate(90deg);
+}
+
+/* Contenedor de sub-ítems (colapsado por defecto) */
+.drawer-group-items {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+  background: var(--surface2);
+}
+.drawer-group-items.open {
+  max-height: 500px; /* altura máxima suficiente */
+}
+
+/* Cada sub-ítem dentro del grupo */
+.drawer-subitem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 52px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  border-top: 1px solid var(--border);
+}
+.drawer-subitem:hover { background: rgba(192,57,43,0.08); }
+
+/* Punto/bullet del sub-ítem */
+.drawer-subitem-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red-light);
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 /* --- Toggle de tema claro/oscuro --- */
@@ -1036,4 +1119,28 @@ header p {
   background: #dbeafe;
   color: #1e40af;
   border-color: #93c5fd;
+}
+
+/* Classroom (verde) en tarjetas */
+.class-link-classroom {
+  background: #0a2a1a;
+  color: #4ade80;
+  border: 1px solid #166534;
+}
+[data-theme="light"] .class-link-classroom {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+/* Classroom (verde) en modal */
+.modal-link-classroom {
+  background: #0a2a1a;
+  color: #4ade80;
+  border: 1px solid #166534;
+}
+[data-theme="light"] .modal-link-classroom {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
 }
